@@ -27,7 +27,7 @@ export const verifyToken = async (
           return res.status(401).json({ error: "Invalid token" });
         }
         req.user = user;
-        const isUserExist = await Employee.findById(req.user.user.id);
+        const isUserExist = await Employee.findById(req.user.employee.id);
         if (!isUserExist) {
           return res.status(401).json({ error: "Invalid token" });
         }

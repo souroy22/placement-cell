@@ -6,21 +6,22 @@ import cors from "cors";
 import routers from "./routers";
 import { corsOptions } from "./configs/corsConfig";
 import connectDB from "./database/dbConfig";
+import { PaginationOptions } from "./utils/pagination";
 
 dotenv.config();
 const PORT = process.env.PORT || "8000";
 const app = express();
-app.set("port", PORT);
-
 declare global {
   namespace Express {
     interface Request {
       user: Record<string, any>;
       token: string | null;
+      pagination: PaginationOptions;
     }
   }
 }
 
+app.set("port", PORT);
 app.use(express.json({ limit: "10kb" }));
 app.use(cors(corsOptions));
 app.use(morgan("dev"));

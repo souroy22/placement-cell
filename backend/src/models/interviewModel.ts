@@ -5,10 +5,13 @@ interface IInterview extends Document {
   date: Date;
 }
 
-const InterviewSchema = new Schema<IInterview>({
-  companyName: { type: String, required: true },
-  date: { type: Date, required: true },
-});
+const InterviewSchema = new Schema<IInterview>(
+  {
+    companyName: { type: String, required: true },
+    date: { type: Date, required: true },
+  },
+  { timestamps: true }
+);
 
 const Interview = model<IInterview>("Interview", InterviewSchema);
 
