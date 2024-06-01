@@ -1,6 +1,6 @@
 const whitelist = [
   "http://127.0.0.1:5500",
-  "https://ninjas-csv-upload.netlify.app",
+  "https://my-placement-cell.netlify.app",
 ];
 
 // Configure CORS options
