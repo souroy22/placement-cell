@@ -16,6 +16,6 @@ resultRouters.patch(
   verifyToken,
   resultControllers.updateResultStatus
 );
-resultRouters.get("/download", resultControllers.downloadResult);
+resultRouters.get("/download", verifyToken, resultControllers.downloadResult);
 
 export default resultRouters;
