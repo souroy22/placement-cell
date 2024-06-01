@@ -1,14 +1,16 @@
 import { Schema, model, Document } from "mongoose";
 
-interface IInterview extends Document {
+export interface IInterview extends Document {
   companyName: string;
-  date: Date;
+  slug: string;
+  date: string;
 }
 
 const InterviewSchema = new Schema<IInterview>(
   {
     companyName: { type: String, required: true },
-    date: { type: Date, required: true },
+    slug: { type: String, required: true, unique: true },
+    date: { type: String, required: true },
   },
   { timestamps: true }
 );

@@ -4,6 +4,7 @@ import Batch, { IBatch } from "../models/batchModel";
 import { HydratedDocument } from "mongoose";
 import slugify from "slugify";
 import ShortUniqueId from "short-unique-id";
+import { paginate } from "../utils/pagination";
 
 const studentControllers = {
   addStudent: async (req: Request, res: Response) => {
@@ -58,6 +59,110 @@ const studentControllers = {
         batch: student.batch,
         slug: student.slug,
       });
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(`Error: ${error.message}`);
+        return res.status(500).json({ error: "Something went wrong!" });
+      }
+    }
+  },
+  getStudentList: async (req: Request, res: Response) => {
+    try {
+      const { searchValue = "" } = req.query;
+
+      // Build the search query
+      const searchQuery = searchValue
+        ? {
+            name: { $regex: searchValue, $options: "i" },
+          }
+        : {};
+      const query = Student.find(searchQuery, {
+        name: 1,
+        email: 1,
+        college: 1,
+        status: 1,
+        dsaScore: 1,
+        webdScore: 1,
+        reactScore: 1,
+        batch: 1,
+        slug: 1,
+        _id: 0,
+      }).populate({ path: "batch", select: "name slug -_id" });
+      const result = await paginate(query, req.pagination);
+      return res.status(200).json(result);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(`Error: ${error.message}`);
+        return res.status(500).json({ error: "Something went wrong!" });
+      }
+    }
+  },
+  updateStudent: async (req: Request, res: Response) => {
+    try {
+      const { slug } = req.params;
+      const student = await Student.findOne({ slug });
+      if (!student) {
+        return res.status(404).json({ error: "No Student found!" });
+      }
+      const updateData: Partial<Record<keyof IStudent, any>> = {};
+
+      const fields: (keyof IStudent)[] = [
+        "name",
+        "email",
+        "college",
+        "status",
+        "dsaScore",
+        "webdScore",
+        "reactScore",
+        "batch",
+      ];
+
+      fields.forEach((field) => {
+        if (
+          req.body[field] !== undefined &&
+          req.body[field] !== student[field]
+        ) {
+          updateData[field] = req.body[field];
+        }
+      });
+      if (!Object.keys(updateData).length) {
+        return res.status(400).json({ error: "All data are same" });
+      }
+
+      const updatedStudent: HydratedDocument<IStudent> | null =
+        await Student.findOneAndUpdate(
+          { slug },
+          { $set: updateData },
+          { new: true }
+        )
+          .select({
+            name: 1,
+            email: 1,
+            college: 1,
+            status: 1,
+            dsaScore: 1,
+            webdScore: 1,
+            reactScore: 1,
+            batch: 1,
+            _id: 0,
+          })
+          .populate({ path: "batch", select: "name slug -_id" });
+      return res.status(200).json(updatedStudent);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(`Error: ${error.message}`);
+        return res.status(500).json({ error: "Something went wrong!" });
+      }
+    }
+  },
+  deleteStudent: async (req: Request, res: Response) => {
+    try {
+      const { slug } = req.params;
+      const deletedStudent = await Student.findOneAndDelete({ slug });
+      if (!deletedStudent) {
+        return res.status(404).json({ error: "No such student found!" });
+      }
+      return res.status(200).json({ msg: "Student deleted successfully!" });
     } catch (error) {
       if (error instanceof Error) {
         console.log(`Error: ${error.message}`);

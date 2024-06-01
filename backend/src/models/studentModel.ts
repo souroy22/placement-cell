@@ -1,11 +1,12 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, model, Document, HydratedDocument } from "mongoose";
+import { IBatch } from "./batchModel";
 
 export interface IStudent extends Document {
   name: string;
   email: string;
   slug: string;
   college: string;
-  batch: Schema.Types.ObjectId;
+  batch: Schema.Types.ObjectId | HydratedDocument<IBatch>;
   status: "placed" | "not_placed";
   dsaScore: number;
   webdScore: number;

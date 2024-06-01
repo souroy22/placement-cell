@@ -1,9 +1,16 @@
 import { Schema, model, Document } from "mongoose";
 
-interface IResult extends Document {
+export type RESULT_STATUS =
+  | "PASS"
+  | "FAIL"
+  | "On_Hold"
+  | "DIDNOT_ATTEMPT"
+  | "PENDING";
+
+export interface IResult extends Document {
   student: Schema.Types.ObjectId;
   interview: Schema.Types.ObjectId;
-  result: "PASS" | "FAIL" | "On_Hold" | "DIDNOT_ATTEMPT" | "PENDING";
+  result: RESULT_STATUS;
 }
 
 const ResultSchema = new Schema<IResult>(

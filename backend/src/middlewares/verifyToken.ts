@@ -24,7 +24,13 @@ export const verifyToken = async (
       process.env.SECRET_KEY || "",
       async (error, user) => {
         if (error) {
-          return res.status(401).json({ error: "Invalid token" });
+          return res
+            .status(401)
+            .json({
+              error: error.message.includes("expired")
+                ? "Token expired. Please login"
+                : "Invalid token",
+            });
         }
         req.user = user;
         const isUserExist = await Employee.findById(req.user.employee.id);

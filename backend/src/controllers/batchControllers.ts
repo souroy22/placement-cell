@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import slugify from "slugify";
 import ShortUniqueId from "short-unique-id";
 import Batch from "../models/batchModel";
+import { paginate } from "../utils/pagination";
 
 const batchControllers = {
   createBatch: async (req: Request, res: Response) => {
@@ -28,47 +29,21 @@ const batchControllers = {
   },
   getAllBatches: async (req: Request, res: Response) => {
     try {
-      const {
-        limit = 30,
-        page = 1,
-        sortOrder = null,
-        searchValue = "",
-        sortBy = "createdAt",
-      } = req.query;
-      const pageNumber = parseInt(page as string, 10);
-      const limitNumber = parseInt(limit as string, 10);
-      const sortDirection = sortOrder === "desc" ? -1 : 1;
-
+      const { searchValue = "" } = req.query;
       // Build the search query
       const searchQuery = searchValue
         ? {
             name: { $regex: searchValue, $options: "i" },
           }
         : {};
-
-      let sortQuery: {} = sortOrder
-        ? { [sortBy as string]: sortDirection }
-        : {};
-
       // Fetch data with pagination, sorting, and searching
-      const batches = await Batch.find(searchQuery, {
+      const query = Batch.find(searchQuery, {
         name: 1,
         slug: 1,
         _id: 0,
-      })
-        .sort(sortQuery)
-        .skip((pageNumber - 1) * limitNumber)
-        .limit(limitNumber);
-
-      // Get the total count of documents that match the search query
-      const totalCount = await Batch.countDocuments(searchQuery);
-      return res.status(200).json({
-        data: batches,
-        currentPage: pageNumber,
-        totalPages: Math.ceil(totalCount / limitNumber),
-        totalCount,
-        limit: limitNumber,
       });
+      const result = await paginate(query, req.pagination);
+      return res.status(200).json(result);
     } catch (error) {
       if (error instanceof Error) {
         console.log(`Error: ${error.message}`);

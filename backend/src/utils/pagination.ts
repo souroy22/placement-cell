@@ -4,11 +4,12 @@ import { Document, Query } from "mongoose";
 export interface PaginationOptions {
   page?: number;
   limit?: number;
-  sort?: string;
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
 }
 
 interface PaginationResult<T> {
-  total: number;
+  totalCount: number;
   page: number;
   limit: number;
   totalPages: number;
@@ -21,37 +22,46 @@ export const paginate = async <T extends Document>(
 ): Promise<PaginationResult<T>> => {
   const page = options.page || 1;
   const limit = options.limit || 10;
-  const sort = options.sort || "";
-
   const skip = (page - 1) * limit;
+
+  // Apply pagination
+  query = query.skip(skip).limit(limit);
+
+  // Apply sorting if provided
+  if (options.sortBy) {
+    const sortOrder = options.sortOrder === "desc" ? "-" : "";
+    const sortFields = `${sortOrder}${options.sortBy}`;
+    query = query.sort(sortFields);
+  }
 
   const [total, data] = await Promise.all([
     query.model.countDocuments(query.getQuery()).exec(),
-    query.skip(skip).limit(limit).sort(sort).exec(),
+    query.exec(),
   ]);
 
   const totalPages = Math.ceil(total / limit);
 
   return {
-    total,
+    data,
+    totalCount: total,
     page,
     limit,
     totalPages,
-    data,
   };
 };
 
 export const paginateMiddleware = async (
   req: Request,
-  res: Response,
+  _: Response,
   next: NextFunction
 ) => {
-  const { page, limit, sort } = req.query;
+  const { page, limit, sortBy, sortOrder } = req.query;
 
   req.pagination = {
     page: parseInt(page as string) || 1,
     limit: parseInt(limit as string) || 10,
-    sort: (sort as string) || "",
+    sortBy: (sortBy as string) || undefined,
+    sortOrder: (sortOrder === "desc" ? "desc" : "asc") as "asc" | "desc",
   };
 
   next();
