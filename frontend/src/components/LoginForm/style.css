@@ -1,0 +1,10 @@
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-button {
+  margin-top: 20px !important;
+  background-color: #496ace !important;
+  font-weight: 600 !important;
+}
