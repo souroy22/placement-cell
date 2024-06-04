@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.corsOptions = void 0;
 const whitelist = [
-    "http://127.0.0.1:5500",
+    "http://localhost:5173",
     "https://my-placement-cell.netlify.app",
 ];
 // Configure CORS options

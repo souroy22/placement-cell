@@ -9,6 +9,6 @@ const authControllers_1 = __importDefault(require("../controllers/authController
 const authRouters = express_1.default.Router();
 authRouters.post("/signup", authControllers_1.default.signup);
 authRouters.post("/signin", authControllers_1.default.signin);
-authRouters.post("/signout", verifyToken_1.verifyToken, authControllers_1.default.signout);
+authRouters.get("/signout", verifyToken_1.verifyToken, authControllers_1.default.signout);
 exports.default = authRouters;
 //# sourceMappingURL=authRouters.js.map

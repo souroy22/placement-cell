@@ -9,11 +9,13 @@ const batchRouters_1 = __importDefault(require("./batchRouters"));
 const studentRouters_1 = __importDefault(require("./studentRouters"));
 const interviewRouters_1 = __importDefault(require("./interviewRouters"));
 const resultRouters_1 = __importDefault(require("./resultRouters"));
+const employeeRouters_1 = __importDefault(require("./employeeRouters"));
 const routers = express_1.default.Router();
 routers.use("/auth", authRouters_1.default);
 routers.use("/batch", batchRouters_1.default);
 routers.use("/student", studentRouters_1.default);
 routers.use("/interview", interviewRouters_1.default);
 routers.use("/result", resultRouters_1.default);
+routers.use("/user", employeeRouters_1.default);
 exports.default = routers;
 //# sourceMappingURL=index.js.map
