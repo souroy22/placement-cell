@@ -42,7 +42,7 @@ const LoginForm = () => {
       const res = await signin(data);
       dispatch(setUser(res.employee));
       customLocalStorage.setData("token", res.token);
-      navigate("/");
+      navigate("/interviews");
     } catch (error) {
       if (error instanceof Error) {
         notification.error(error.message);

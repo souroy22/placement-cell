@@ -19,51 +19,7 @@ import { signout } from "../../api/auth.api";
 import LOGO_PATH from "../../assets/images/_26ff86d0-8e48-4572-92c9-e7fb02b47805.webp";
 import "./style.css";
 import { setUser } from "../../store/user/userReducer";
-
-const pages = [
-  {
-    name: "Login",
-    url: "/signin",
-    private: false,
-    accessRoles: [""],
-  },
-  {
-    name: "Signup",
-    url: "/signup",
-    private: false,
-    accessRoles: [""],
-  },
-  {
-    name: "Book Appointment",
-    url: "/book-appointment",
-    private: true,
-  },
-  {
-    name: "Choose Slots",
-    url: "/choose-slots",
-    private: true,
-  },
-  {
-    name: "My Slots",
-    url: "/my-slots",
-    private: true,
-  },
-  {
-    name: "My Appointments",
-    url: "/appointments",
-    private: true,
-  },
-  {
-    name: "Available Slots",
-    url: "/available-slots",
-    private: true,
-  },
-];
-
-const settings = [
-  { name: "Profile", url: "/profile" },
-  { name: "Logout", url: null },
-];
+import { pages, settings } from "../../services/constants";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -203,24 +159,26 @@ const Navbar = () => {
             </Link>
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => {
-              if (showNavbarOption(page.private)) {
-                return (
-                  <React.Fragment key={page.name}>
-                    <Button
-                      key={page.name}
-                      onClick={() => handleCloseNavMenu(page)}
-                      sx={{ my: 2, color: "white", display: "block", mr: 2 }}
-                    >
-                      {page.name}
-                    </Button>
-                  </React.Fragment>
-                );
-              } else {
-                return null;
-              }
-            })}
+          <Box
+            sx={{
+              flexGrow: 1,
+              justifyContent: "flex-end",
+              display: { xs: "none", md: "flex" },
+            }}
+          >
+            {pages.map((page) =>
+              showNavbarOption(page.private) ? (
+                <React.Fragment key={page.name}>
+                  <Button
+                    key={page.name}
+                    onClick={() => handleCloseNavMenu(page)}
+                    sx={{ my: 2, color: "white", display: "block", mr: 2 }}
+                  >
+                    {page.name}
+                  </Button>
+                </React.Fragment>
+              ) : null
+            )}
           </Box>
           {user && (
             <Box sx={{ flexGrow: 0 }}>

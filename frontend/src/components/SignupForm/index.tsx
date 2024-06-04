@@ -50,7 +50,7 @@ const SignupForm = () => {
       const res = await signup(data);
       dispatch(setUser(res.user));
       customLocalStorage.setData("token", res.token);
-      navigate("/");
+      navigate("/interviews");
     } catch (error) {
       if (error instanceof Error) {
         notification.error(error.message);

@@ -1,20 +1,43 @@
-import { Route, Routes } from "react-router-dom";
+import { Suspense, lazy } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
 import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
-import LoginForm from "../components/LoginForm";
-import SignupForm from "../components/SignupForm";
+import { Box, CircularProgress } from "@mui/material";
+const LoginForm = lazy(() => import("../components/LoginForm"));
+const SignupForm = lazy(() => import("../components/SignupForm"));
+const Interviews = lazy(() => import("../pages/interviews"));
+const Students = lazy(() => import("../pages/students"));
 
 const RouterComponent = () => {
   return (
-    <Routes>
-      <Route element={<PublicRoute />}>
-        <Route path="/signin" element={<LoginForm />} />
-        <Route path="/signup" element={<SignupForm />} />
-      </Route>
-      <Route element={<PrivateRoute />}>
-        <Route path="/" element={<div>Home Page</div>} />
-      </Route>
-    </Routes>
+    <Suspense
+      fallback={
+        <Box
+          sx={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress sx={{ zIndex: 10000 }} />
+        </Box>
+      }
+    >
+      <Routes>
+        <Route element={<PublicRoute />}>
+          <Route path="/signin" element={<LoginForm />} />
+          <Route path="/signup" element={<SignupForm />} />
+        </Route>
+        <Route element={<PrivateRoute />}>
+          <Route path="/" element={<Navigate to="/interviews" />} />
+          <Route path="/interviews" element={<Interviews />} />
+          <Route path="/students" element={<Students />} />
+        </Route>
+      </Routes>
+    </Suspense>
   );
 };
 
