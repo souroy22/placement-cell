@@ -46,7 +46,7 @@ const interviewControllers = {
       // Build the search query
       const searchQuery = searchValue
         ? {
-            name: { $regex: searchValue, $options: "i" },
+            companyName: { $regex: searchValue, $options: "i" },
           }
         : {};
       // Fetch data with pagination, sorting, and searching

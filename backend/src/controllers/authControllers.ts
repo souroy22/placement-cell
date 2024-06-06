@@ -30,7 +30,7 @@ const authControllers = {
       };
       const token = await genarateToken(employee);
       return res.status(200).json({
-        employee,
+        employee: { name: newEmployee.name, email: newEmployee.email },
         token,
       });
     } catch (error) {

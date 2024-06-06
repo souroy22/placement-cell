@@ -41,7 +41,7 @@ const authControllers = {
             };
             const token = yield (0, genarateToken_1.default)(employee);
             return res.status(200).json({
-                employee,
+                employee: { name: newEmployee.name, email: newEmployee.email },
                 token,
             });
         }

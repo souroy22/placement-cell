@@ -4,6 +4,7 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 import { customLocalStorage } from "../services/utils/localStorage";
+import notification from "./notification";
 
 interface ErrorResponseData {
   error: string;
@@ -38,6 +39,7 @@ const createAxiosInstance = (): AxiosInstance => {
     },
     (error: AxiosError<ErrorResponseData>) => {
       if (error.response?.status === 401) {
+        notification.error(error.response?.data.error);
         error.message = error.response?.data?.error;
         return Promise.reject(error);
       }

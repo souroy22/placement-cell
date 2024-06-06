@@ -16,7 +16,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { signout } from "../../api/auth.api";
-import LOGO_PATH from "../../assets/images/_26ff86d0-8e48-4572-92c9-e7fb02b47805.webp";
+import LOGO_PATH from "../../assets/images/placement-840x450.jpg";
 import "./style.css";
 import { setUser } from "../../store/user/userReducer";
 import { pages, settings } from "../../services/constants";
@@ -87,7 +87,7 @@ const Navbar = () => {
               display: { xs: "none", md: "flex" },
               fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: ".3rem",
+              letterSpacing: ".2rem",
               color: "white",
               textDecoration: "none",
             }}

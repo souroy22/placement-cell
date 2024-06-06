@@ -13,8 +13,7 @@ const Base = ({ children }: PROP_TYPES) => {
         padding: "20px",
         height: "calc(100svh - 60px)",
         width: "100svw",
-        overflowX: "hidden",
-        overflowY: "auto",
+        overflow: "hidden",
       }}
     >
       {children}

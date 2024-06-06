@@ -76,9 +76,9 @@ const SignupForm = () => {
       <FormControl>
         <TextInput
           handleChange={handleChange}
-          id="username"
-          name="username"
-          label="Username"
+          id="email"
+          name="email"
+          label="Email"
           value={data.email}
           errorMessage={errors.email || ""}
           IconComponent={AccountCircleIcon}

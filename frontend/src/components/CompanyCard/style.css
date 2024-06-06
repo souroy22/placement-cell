@@ -1,0 +1,50 @@
+.company-card {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: white;
+  align-items: center;
+  flex-wrap: wrap;
+  border-radius: 5px;
+  box-shadow: 0 0 10px gray;
+  width: 60%;
+}
+
+.company-card-left {
+  display: flex;
+  gap: 20px;
+}
+
+.company-logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  mix-blend-mode: multiply;
+  object-fit: cover;
+  align-items: center;
+}
+
+.company-details {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: center;
+}
+
+.company-name {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.applyBtn {
+  color: orange;
+  border-color: orange !important;
+  transition: all 0.3s ease-in;
+}
+
+.applyBtn:hover {
+  background-color: orange !important;
+  outline: none !important;
+  color: white;
+}
