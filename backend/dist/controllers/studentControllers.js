@@ -71,14 +71,27 @@ const studentControllers = {
     }),
     getStudentList: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const { searchValue = "" } = req.query;
-            // Build the search query
-            const searchQuery = searchValue
-                ? {
+            const { searchValue = "", status } = req.query;
+            const query = {};
+            if (searchValue) {
+                query.$or = [
+                    { name: { $regex: searchValue, $options: "i" } },
+                    { email: { $regex: searchValue, $options: "i" } },
+                    { college: { $regex: searchValue, $options: "i" } },
+                ];
+                // To search in batch name, we'll need to perform a subquery
+                const batches = yield batchModel_1.default.find({
                     name: { $regex: searchValue, $options: "i" },
+                }).select("_id");
+                if (batches.length > 0) {
+                    const batchIds = batches.map((batch) => batch._id);
+                    query.$or.push({ batch: { $in: batchIds } });
                 }
-                : {};
-            const query = studentModel_1.default.find(searchQuery, {
+            }
+            if (status) {
+                query.status = status;
+            }
+            const studentQuery = studentModel_1.default.find(query, {
                 name: 1,
                 email: 1,
                 college: 1,
@@ -90,7 +103,7 @@ const studentControllers = {
                 slug: 1,
                 _id: 0,
             }).populate({ path: "batch", select: "name slug -_id" });
-            const result = yield (0, pagination_1.paginate)(query, req.pagination);
+            const result = yield (0, pagination_1.paginate)(studentQuery, req.pagination);
             return res.status(200).json(result);
         }
         catch (error) {

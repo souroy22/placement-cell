@@ -68,15 +68,32 @@ const studentControllers = {
   },
   getStudentList: async (req: Request, res: Response) => {
     try {
-      const { searchValue = "" } = req.query;
+      const { searchValue = "", status } = req.query;
 
-      // Build the search query
-      const searchQuery = searchValue
-        ? {
-            name: { $regex: searchValue, $options: "i" },
-          }
-        : {};
-      const query = Student.find(searchQuery, {
+      const query: any = {};
+
+      if (searchValue) {
+        query.$or = [
+          { name: { $regex: searchValue, $options: "i" } },
+          { email: { $regex: searchValue, $options: "i" } },
+          { college: { $regex: searchValue, $options: "i" } },
+        ];
+
+        // To search in batch name, we'll need to perform a subquery
+        const batches = await Batch.find({
+          name: { $regex: searchValue, $options: "i" },
+        }).select("_id");
+        if (batches.length > 0) {
+          const batchIds = batches.map((batch) => batch._id);
+          query.$or.push({ batch: { $in: batchIds } });
+        }
+      }
+
+      if (status) {
+        query.status = status;
+      }
+
+      const studentQuery = Student.find(query, {
         name: 1,
         email: 1,
         college: 1,
@@ -88,7 +105,7 @@ const studentControllers = {
         slug: 1,
         _id: 0,
       }).populate({ path: "batch", select: "name slug -_id" });
-      const result = await paginate(query, req.pagination);
+      const result = await paginate(studentQuery, req.pagination);
       return res.status(200).json(result);
     } catch (error) {
       if (error instanceof Error) {
