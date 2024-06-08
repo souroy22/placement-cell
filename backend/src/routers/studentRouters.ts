@@ -22,5 +22,10 @@ studentRouters.delete(
   verifyToken,
   studentControllers.deleteStudent
 );
+studentRouters.get(
+  "/all/not-applied/:slug",
+  verifyToken,
+  studentControllers.getNotAppliedStudents
+);
 
 export default studentRouters;

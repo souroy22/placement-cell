@@ -46,18 +46,32 @@ const resultControllers = {
     }
   },
   getAllResults: async (req: Request, res: Response) => {
+    const { slug } = req.query;
+    let searchQuery = {};
+    if (slug) {
+      const interview = await Interview.findOne({ slug });
+      if (interview) {
+        searchQuery = {
+          interview: interview._id,
+        };
+      }
+    }
+
     try {
-      const query = Result.find().populate([
-        {
-          path: "student",
-          select:
-            "name email college status dsaScore webdScore reactScore batch slug -_id",
-        },
-        {
-          path: "interview",
-          select: "companyName date slug -_id",
-        },
-      ]);
+      const query = Result.find(searchQuery)
+        .select("-_id -createdAt -updatedAt")
+        .populate([
+          {
+            path: "student",
+            select:
+              "name email college status dsaScore webdScore reactScore batch slug -_id",
+            populate: { path: "batch", select: "name slug -_id" },
+          },
+          {
+            path: "interview",
+            select: "companyName date slug -_id",
+          },
+        ]);
       const result = await paginate(query, req.pagination);
       return res.status(200).json(result);
     } catch (error) {

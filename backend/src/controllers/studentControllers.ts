@@ -5,6 +5,8 @@ import { HydratedDocument } from "mongoose";
 import slugify from "slugify";
 import ShortUniqueId from "short-unique-id";
 import { paginate } from "../utils/pagination";
+import Result from "../models/resultModel";
+import Interview from "../models/interviewModel";
 
 const studentControllers = {
   addStudent: async (req: Request, res: Response) => {
@@ -161,6 +163,7 @@ const studentControllers = {
             webdScore: 1,
             reactScore: 1,
             batch: 1,
+            slug: 1,
             _id: 0,
           })
           .populate({ path: "batch", select: "name slug -_id" });
@@ -180,6 +183,29 @@ const studentControllers = {
         return res.status(404).json({ error: "No such student found!" });
       }
       return res.status(200).json({ msg: "Student deleted successfully!" });
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(`Error: ${error.message}`);
+        return res.status(500).json({ error: "Something went wrong!" });
+      }
+    }
+  },
+  getNotAppliedStudents: async (req: Request, res: Response) => {
+    try {
+      const { slug } = req.params;
+      const interview = await Interview.findOne({ slug }).select("_id");
+      const students = await Student.find().select("name slug");
+      const results = [];
+      for (let student of students) {
+        const isApplied = await Result.findOne({
+          student: student._id,
+          interview: interview._id,
+        });
+        if (!isApplied) {
+          results.push({ name: student.name, slug: student.slug });
+        }
+      }
+      return res.status(200).json(results);
     } catch (error) {
       if (error instanceof Error) {
         console.log(`Error: ${error.message}`);

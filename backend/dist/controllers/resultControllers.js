@@ -48,11 +48,24 @@ const resultControllers = {
         }
     }),
     getAllResults: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const { slug } = req.query;
+        let searchQuery = {};
+        if (slug) {
+            const interview = yield interviewModel_1.default.findOne({ slug });
+            if (interview) {
+                searchQuery = {
+                    interview: interview._id,
+                };
+            }
+        }
         try {
-            const query = resultModel_1.default.find().populate([
+            const query = resultModel_1.default.find(searchQuery)
+                .select("-_id -createdAt -updatedAt")
+                .populate([
                 {
                     path: "student",
                     select: "name email college status dsaScore webdScore reactScore batch slug -_id",
+                    populate: { path: "batch", select: "name slug -_id" },
                 },
                 {
                     path: "interview",

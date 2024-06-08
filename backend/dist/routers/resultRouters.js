@@ -10,6 +10,6 @@ const resultControllers_1 = __importDefault(require("../controllers/resultContro
 const resultRouters = express_1.default.Router();
 resultRouters.get("/all", verifyToken_1.verifyToken, pagination_1.paginateMiddleware, resultControllers_1.default.getAllResults);
 resultRouters.patch("/update-status", verifyToken_1.verifyToken, resultControllers_1.default.updateResultStatus);
-resultRouters.get("/download", verifyToken_1.verifyToken, resultControllers_1.default.downloadResult);
+resultRouters.get("/download", resultControllers_1.default.downloadResult);
 exports.default = resultRouters;
 //# sourceMappingURL=resultRouters.js.map

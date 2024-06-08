@@ -1,0 +1,32 @@
+.no-record-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  height: max-content;
+}
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 40px;
+}
+
+.form-card {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 20px;
+}
+
+.form-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #000043;
+}
+
+.interview-add-form-label {
+  font-size: 17px;
+  font-weight: 600;
+}

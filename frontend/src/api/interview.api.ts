@@ -24,3 +24,11 @@ export const createInterview = async (data: INTERVIEW_FORM_TYPE) => {
   }
   return res.data;
 };
+
+export const updateInterview = async (data: any, slug: string) => {
+  const res = await AXIOS.patch(`/interview/update/${slug}`, { ...data });
+  if (res.data.error) {
+    return Promise.reject(res.data.error);
+  }
+  return res.data;
+};

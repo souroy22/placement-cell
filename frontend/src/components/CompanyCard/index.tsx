@@ -1,13 +1,24 @@
 import { Box, Button } from "@mui/material";
 import { MdDateRange } from "react-icons/md";
 import "./style.css";
+import { useNavigate } from "react-router-dom";
+import { INTERVIEW_FORM_TYPE } from "../../pages/interviews";
 
 type PROP_TYPES = {
   companyName: string;
   date: string;
+  slug: string;
+  handleClickUpdate: (data: INTERVIEW_FORM_TYPE, slug: string) => void;
 };
 
-const CompanyCard = ({ companyName, date }: PROP_TYPES) => {
+const CompanyCard = ({
+  companyName,
+  date,
+  slug,
+  handleClickUpdate,
+}: PROP_TYPES) => {
+  const navigate = useNavigate();
+
   return (
     <Box className="company-card">
       <Box className="company-card-left">
@@ -24,9 +35,27 @@ const CompanyCard = ({ companyName, date }: PROP_TYPES) => {
         </Box>
       </Box>
 
-      <Box>
-        <Button variant="outlined" className="applyBtn">
+      <Box sx={{ display: "flex", gap: "20px" }}>
+        <Button
+          variant="outlined"
+          className="applyBtn"
+          onClick={() => navigate(`/result/${slug}`)}
+        >
           View Details
+        </Button>
+        <Button
+          variant="outlined"
+          className="updatebtn"
+          onClick={() => handleClickUpdate({ companyName, date }, slug)}
+        >
+          Update
+        </Button>
+        <Button
+          variant="outlined"
+          className="deleteBtn"
+          onClick={() => navigate(`/result/${slug}`)}
+        >
+          Delete
         </Button>
       </Box>
     </Box>

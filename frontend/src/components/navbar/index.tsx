@@ -20,6 +20,8 @@ import LOGO_PATH from "../../assets/images/placement-840x450.jpg";
 import "./style.css";
 import { setUser } from "../../store/user/userReducer";
 import { pages, settings } from "../../services/constants";
+import { downloadResult } from "../../api/result.api";
+import { IconType } from "react-icons";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -40,8 +42,17 @@ const Navbar = () => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = (page: { name: string; url: string }) => {
-    navigate(page.url);
+  const handleCloseNavMenu = (page: {
+    name: string;
+    url: string | null;
+    Icon?: IconType;
+  }) => {
+    if (page.url !== null) {
+      navigate(page.url);
+    } else if (page.name === "Download Result") {
+      const apiUrl = `${import.meta.env.VITE_BASE_URL}/result/download`; // Replace with your actual API endpoint
+      window.open(apiUrl, "_blank");
+    }
     setAnchorElNav(null);
   };
 
@@ -50,14 +61,7 @@ const Navbar = () => {
   };
 
   const handleClick = async (value: { name: string; url: string | null }) => {
-    if (value.name === "Logout") {
-      await signout();
-      localStorage.removeItem("token");
-      await dispatch(setUser(null));
-      navigate("/signin");
-    } else if (value.name === "Book Appointment") {
-      navigate("/book-appointment");
-    } else if (value.url !== null) {
+    if (value.url !== null) {
       navigate(value.url);
     }
     handleCloseUserMenu();
@@ -125,13 +129,14 @@ const Navbar = () => {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
-                <React.Fragment key={page.name}>
+              {pages.map(({ name, Icon, url }) => (
+                <React.Fragment key={name}>
                   <MenuItem
-                    key={page.name}
-                    onClick={() => handleCloseNavMenu(page)}
+                    key={name}
+                    onClick={() => handleCloseNavMenu({ name, Icon, url })}
                   >
-                    <Typography textAlign="center">{page.name}</Typography>
+                    {Icon ? <Icon /> : null}
+                    <Typography textAlign="center">{name}</Typography>
                   </MenuItem>
                 </React.Fragment>
               ))}
@@ -166,15 +171,22 @@ const Navbar = () => {
               display: { xs: "none", md: "flex" },
             }}
           >
-            {pages.map((page) =>
-              showNavbarOption(page.private) ? (
-                <React.Fragment key={page.name}>
+            {pages.map(({ name, Icon, url, privateURL }) =>
+              showNavbarOption(privateURL) ? (
+                <React.Fragment key={name}>
                   <Button
-                    key={page.name}
-                    onClick={() => handleCloseNavMenu(page)}
-                    sx={{ my: 2, color: "white", display: "block", mr: 2 }}
+                    key={name}
+                    onClick={() => handleCloseNavMenu({ name, Icon, url })}
+                    sx={{
+                      my: 2,
+                      color: "white",
+                      display: "flex",
+                      mr: 2,
+                      gap: "5px",
+                    }}
                   >
-                    {page.name}
+                    {Icon ? <Icon style={{ fontSize: "18px" }} /> : null}
+                    {name}
                   </Button>
                 </React.Fragment>
               ) : null

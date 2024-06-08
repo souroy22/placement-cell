@@ -17,6 +17,8 @@ const batchModel_1 = __importDefault(require("../models/batchModel"));
 const slugify_1 = __importDefault(require("slugify"));
 const short_unique_id_1 = __importDefault(require("short-unique-id"));
 const pagination_1 = require("../utils/pagination");
+const resultModel_1 = __importDefault(require("../models/resultModel"));
+const interviewModel_1 = __importDefault(require("../models/interviewModel"));
 const studentControllers = {
     addStudent: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
@@ -170,6 +172,30 @@ const studentControllers = {
                 return res.status(404).json({ error: "No such student found!" });
             }
             return res.status(200).json({ msg: "Student deleted successfully!" });
+        }
+        catch (error) {
+            if (error instanceof Error) {
+                console.log(`Error: ${error.message}`);
+                return res.status(500).json({ error: "Something went wrong!" });
+            }
+        }
+    }),
+    getNotAppliedStudents: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const { slug } = req.params;
+            const interview = yield interviewModel_1.default.findOne({ slug }).select("_id");
+            const students = yield studentModel_1.default.find().select("name slug");
+            const results = [];
+            for (let student of students) {
+                const isApplied = yield resultModel_1.default.findOne({
+                    student: student._id,
+                    interview: interview._id,
+                });
+                if (!isApplied) {
+                    results.push({ name: student.name, slug: student.slug });
+                }
+            }
+            return res.status(200).json(results);
         }
         catch (error) {
             if (error instanceof Error) {

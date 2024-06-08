@@ -12,5 +12,6 @@ studentRouters.post("/add", verifyToken_1.verifyToken, studentControllers_1.defa
 studentRouters.get("/all", verifyToken_1.verifyToken, pagination_1.paginateMiddleware, studentControllers_1.default.getStudentList);
 studentRouters.patch("/update/:slug", verifyToken_1.verifyToken, studentControllers_1.default.updateStudent);
 studentRouters.delete("/delete/:slug", verifyToken_1.verifyToken, studentControllers_1.default.deleteStudent);
+studentRouters.get("/all/not-applied/:slug", verifyToken_1.verifyToken, studentControllers_1.default.getNotAppliedStudents);
 exports.default = studentRouters;
 //# sourceMappingURL=studentRouters.js.map

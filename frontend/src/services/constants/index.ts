@@ -1,23 +1,31 @@
+import { IoMdDownload } from "react-icons/io";
+
 export const pages = [
   {
     name: "Login",
     url: "/signin",
-    private: false,
+    privateURL: false,
   },
   {
     name: "Signup",
     url: "/signup",
-    private: false,
+    privateURL: false,
+  },
+  {
+    name: "Download Result",
+    url: null,
+    privateURL: true,
+    Icon: IoMdDownload,
   },
   {
     name: "Students",
     url: "/students",
-    private: true,
+    privateURL: true,
   },
   {
     name: "Interviews",
     url: "/interviews",
-    private: true,
+    privateURL: true,
   },
 ];
 
