@@ -5,11 +5,13 @@ import {
   Button,
   CircularProgress,
   Pagination,
+  Skeleton,
   TextField,
 } from "@mui/material";
 import "./style.css";
 import {
   createNewStudent,
+  deleteStudent,
   getAllStudents,
   updateStudentData,
 } from "../../api/student.api";
@@ -42,7 +44,7 @@ const Students = () => {
   const [value, setValue] = useState("");
   const [open, setOpen] = useState(false);
   const [load, setLoad] = useState<boolean>(false);
-  // const [initLoad, setinitLoad] = useState<boolean>(false);
+  const [initLoad, setinitLoad] = useState<boolean>(false);
   const [batches, setBatches] = useState<any>([]);
   const [formData, setFormData] = useState<any>(initialFormData);
   const [updateMode, setUpdateMode] = useState(false);
@@ -92,11 +94,13 @@ const Students = () => {
   };
 
   const onLoad = async () => {
+    setinitLoad(true);
     await getStudents();
     const data = await fetchBatches();
     setBatches(data.data);
     setBatchCurrentPage(1);
     setBatchTotalPages(data.totalPages);
+    setinitLoad(false);
   };
 
   const handleClose = () => {
@@ -164,7 +168,8 @@ const Students = () => {
         }
       }
     }
-    setOpen(false);
+    handleClose();
+    // setOpen(false);
     setLoad(false);
   };
 
@@ -222,6 +227,26 @@ const Students = () => {
       }
     }
     return check;
+  };
+
+  const handleDelete = async (slug: string) => {
+    try {
+      await deleteStudent(slug);
+      if (students) {
+        const filteredData = students.filter(
+          (student) => student.slug !== slug
+        );
+        dispatch(setStudents(filteredData));
+      } else {
+        dispatch(setStudents(null));
+      }
+      notification.success("Student deleted successfully!");
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log("error.message", error.message);
+        notification.error(error.message);
+      }
+    }
   };
 
   useEffect(() => {
@@ -427,14 +452,28 @@ const Students = () => {
           </Button>
         </Box>
         <Box className="students-container">
-          {students?.map((student) => (
-            <StudentCard
-              key={student.slug}
-              data={student}
-              handleClickUpdate={handleClickUpdate}
-              slug={student.slug}
-            />
-          ))}
+          {initLoad ? (
+            <Box sx={{ display: "flex", gap: "30px" }}>
+              {[...Array(4)].map(() => (
+                <Skeleton variant="rectangular" height={300} width={300} />
+              ))}
+            </Box>
+          ) : !students || !students.length ? (
+            <Box className="no-record-container">
+              <img src="https://www.rajasthanndaacademy.com/assets/images/no-record-found.png" />
+            </Box>
+          ) : (
+            students?.map((student) => (
+              <StudentCard
+                key={student.slug}
+                data={student}
+                handleClickUpdate={handleClickUpdate}
+                slug={student.slug}
+                showupdateIcons={true}
+                handleDelete={handleDelete}
+              />
+            ))
+          )}
         </Box>
       </Box>
       <Pagination

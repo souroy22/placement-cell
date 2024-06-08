@@ -182,6 +182,7 @@ const studentControllers = {
       if (!deletedStudent) {
         return res.status(404).json({ error: "No such student found!" });
       }
+      await Result.findOneAndDelete({ student: deletedStudent._id });
       return res.status(200).json({ msg: "Student deleted successfully!" });
     } catch (error) {
       if (error instanceof Error) {

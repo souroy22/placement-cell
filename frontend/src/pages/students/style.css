@@ -52,6 +52,8 @@
   display: flex;
   gap: 30px;
   flex-wrap: wrap;
+  overflow-x: hidden;
+  overflow-y: auto;
   height: calc(82svh - 100px);
 }
 

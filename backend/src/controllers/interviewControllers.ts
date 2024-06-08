@@ -116,6 +116,7 @@ const interviewControllers = {
       if (!deletedInterview) {
         return res.status(404).json({ error: "No such interview found!" });
       }
+      await Result.findOneAndDelete({ interview: deletedInterview._id });
       return res.status(200).json({ msg: "Interview successfully deleted" });
     } catch (error) {
       if (error instanceof Error) {

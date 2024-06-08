@@ -7,7 +7,6 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
   bgcolor: "background.paper",
   boxShadow: 24,
   borderRadius: "3px !important",
@@ -17,9 +16,15 @@ type PROP_TYPES = {
   open: boolean;
   handleClose: () => void;
   children: ReactNode;
+  width?: string | number;
 };
 
-const CustomModal = ({ open, handleClose, children }: PROP_TYPES) => {
+const CustomModal = ({
+  open,
+  handleClose,
+  children,
+  width = 400,
+}: PROP_TYPES) => {
   return (
     <div>
       <Modal
@@ -28,7 +33,7 @@ const CustomModal = ({ open, handleClose, children }: PROP_TYPES) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>{children}</Box>
+        <Box sx={{ ...style, width }}>{children}</Box>
       </Modal>
     </div>
   );

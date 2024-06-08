@@ -120,6 +120,7 @@ const interviewControllers = {
             if (!deletedInterview) {
                 return res.status(404).json({ error: "No such interview found!" });
             }
+            yield resultModel_1.default.findOneAndDelete({ interview: deletedInterview._id });
             return res.status(200).json({ msg: "Interview successfully deleted" });
         }
         catch (error) {

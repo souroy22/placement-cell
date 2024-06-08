@@ -172,6 +172,7 @@ const studentControllers = {
             if (!deletedStudent) {
                 return res.status(404).json({ error: "No such student found!" });
             }
+            yield resultModel_1.default.findOneAndDelete({ student: deletedStudent._id });
             return res.status(200).json({ msg: "Student deleted successfully!" });
         }
         catch (error) {

@@ -39,3 +39,11 @@ export const updateStudentData = async (slug: string, data: any) => {
   }
   return res.data;
 };
+
+export const deleteStudent = async (slug: string) => {
+  const res = await AXIOS.delete(`/student/delete/${slug}`);
+  if (res.data.error) {
+    return Promise.reject(res.data.error);
+  }
+  return res.data;
+};
