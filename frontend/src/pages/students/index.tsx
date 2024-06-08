@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import {
   Autocomplete,
   Box,
@@ -14,7 +14,7 @@ import {
   updateStudentData,
 } from "../../api/student.api";
 import notification from "../../configs/notification";
-import { Student_TYPE, setStudents } from "../../store/student/studentReducer";
+import { setStudents } from "../../store/student/studentReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import StudentCard from "../../components/StudentCard";
@@ -42,13 +42,15 @@ const Students = () => {
   const [value, setValue] = useState("");
   const [open, setOpen] = useState(false);
   const [load, setLoad] = useState<boolean>(false);
-  const [initLoad, setinitLoad] = useState<boolean>(false);
+  // const [initLoad, setinitLoad] = useState<boolean>(false);
   const [batches, setBatches] = useState<any>([]);
   const [formData, setFormData] = useState<any>(initialFormData);
   const [updateMode, setUpdateMode] = useState(false);
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
 
   const dispatch = useDispatch();
+
+  console.log(`${currentBatchPage}, ${totalBatchPages}`);
 
   // const optionsContainerRef = useRef<HTMLDivElement | null>(null);
 

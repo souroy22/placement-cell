@@ -20,8 +20,8 @@ import LOGO_PATH from "../../assets/images/placement-840x450.jpg";
 import "./style.css";
 import { setUser } from "../../store/user/userReducer";
 import { pages, settings } from "../../services/constants";
-import { downloadResult } from "../../api/result.api";
 import { IconType } from "react-icons";
+import notification from "../../configs/notification";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -63,6 +63,17 @@ const Navbar = () => {
   const handleClick = async (value: { name: string; url: string | null }) => {
     if (value.url !== null) {
       navigate(value.url);
+    } else if (value.name === "Logout") {
+      try {
+        await signout();
+        dispatch(setUser(null));
+        navigate("/signin");
+      } catch (error) {
+        if (error instanceof Error) {
+          console.log("error.message", error.message);
+          notification.error(error.message);
+        }
+      }
     }
     handleCloseUserMenu();
   };

@@ -152,6 +152,7 @@ const studentControllers = {
                 webdScore: 1,
                 reactScore: 1,
                 batch: 1,
+                slug: 1,
                 _id: 0,
             })
                 .populate({ path: "batch", select: "name slug -_id" });

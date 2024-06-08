@@ -1,9 +1,9 @@
 import { Suspense, lazy } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
+import { Box, CircularProgress } from "@mui/material";
 import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
-import { Box, CircularProgress } from "@mui/material";
-import Result from "../pages/results";
+const Result = lazy(() => import("../pages/results"));
 const LoginForm = lazy(() => import("../components/LoginForm"));
 const SignupForm = lazy(() => import("../components/SignupForm"));
 const Interviews = lazy(() => import("../pages/interviews"));
@@ -15,8 +15,9 @@ const RouterComponent = () => {
       fallback={
         <Box
           sx={{
-            width: "100%",
-            height: "100%",
+            width: "100svw",
+            height: "100svh",
+            overflow: "hidden",
             display: "flex",
             justifyContent: "center",
             flexWrap: "wrap",

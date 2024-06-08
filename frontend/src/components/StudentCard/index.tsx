@@ -6,8 +6,8 @@ import { MdDelete } from "react-icons/md";
 
 type PROP_TYPES = {
   data: Student_TYPE;
-  handleClickUpdate: (slug: string) => void;
-  slug: string;
+  handleClickUpdate?: (slug: string) => void;
+  slug?: string;
 };
 
 const StudentCard = ({ data, handleClickUpdate, slug }: PROP_TYPES) => {
@@ -27,7 +27,11 @@ const StudentCard = ({ data, handleClickUpdate, slug }: PROP_TYPES) => {
       <Box className="icons-container">
         <FaUserEdit
           className="edit-student-icon"
-          onClick={() => handleClickUpdate(slug)}
+          onClick={() => {
+            if (slug) {
+              handleClickUpdate && handleClickUpdate(slug);
+            }
+          }}
         />
         <MdDelete className="delete-student-icon" />
       </Box>
