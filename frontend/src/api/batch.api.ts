@@ -17,3 +17,27 @@ export const getAllBatches = async (
   }
   return res.data;
 };
+
+export const createBatch = async (name: string) => {
+  const res = await AXIOS.post("/batch/create", { name });
+  if (res.data.error) {
+    return Promise.reject(res.data.error);
+  }
+  return res.data;
+};
+
+export const updateBatch = async (name: string, slug: string) => {
+  const res = await AXIOS.patch(`/batch/update/${slug}`, { name });
+  if (res.data.error) {
+    return Promise.reject(res.data.error);
+  }
+  return res.data;
+};
+
+export const deleteBatch = async (slug: string) => {
+  const res = await AXIOS.delete(`/batch/delete/${slug}`);
+  if (res.data.error) {
+    return Promise.reject(res.data.error);
+  }
+  return res.data;
+};

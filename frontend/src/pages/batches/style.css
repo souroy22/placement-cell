@@ -1,0 +1,130 @@
+.batches-container {
+  width: 100svw;
+}
+
+.batches-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px 40px;
+  gap: 20px;
+}
+
+.form-card {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 20px;
+}
+
+.form-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #000043;
+}
+
+.batch-form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.batch-add-form-label {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.batch-add-form-input {
+  margin-bottom: 10px;
+  padding: 10px 5px;
+  font-size: 16px;
+  outline: none;
+  border: 1px solid gray;
+}
+
+#batches-search-input {
+  border: none;
+  border-bottom: 2px solid gray;
+  outline: none;
+  padding: 10px 5px;
+  width: 300px;
+  background-color: transparent;
+  font-size: 17px;
+  letter-spacing: 0.3px;
+  transition: all 0.3s ease-in-out;
+}
+
+#batches-search-input:focus {
+  width: 350px;
+}
+
+#add-new-batches-btn {
+  background-color: orange !important;
+  color: white;
+  border: none;
+  transition: all 0.3s ease-in;
+  display: flex;
+  gap: 5px;
+}
+
+#add-new-batches-btn:hover {
+  transform: scale(1.04);
+}
+
+.no-record-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: auto;
+}
+
+.skeleton-container {
+  display: flex;
+  gap: 30px;
+}
+
+.batches-card-container {
+  display: flex;
+  /* justify-content: space-between; */
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 30px;
+  height: calc(92svh - 100px);
+  overflow-y: auto;
+  justify-content: center;
+}
+
+.batch-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 10px gray;
+  width: 200px;
+  height: 100px;
+  padding: 10px;
+  border-radius: 3px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 20px;
+  position: relative;
+}
+
+.icons-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.edit-student-icon {
+  color: green;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.delete-student-icon {
+  color: red;
+  cursor: pointer;
+  font-size: 15px;
+}

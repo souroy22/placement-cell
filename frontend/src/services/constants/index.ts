@@ -23,6 +23,11 @@ export const pages = [
     privateURL: true,
   },
   {
+    name: "Batches",
+    url: "/batches",
+    privateURL: true,
+  },
+  {
     name: "Interviews",
     url: "/interviews",
     privateURL: true,
@@ -32,4 +37,9 @@ export const pages = [
 export const settings = [
   { name: "Profile", url: "/profile" },
   { name: "Logout", url: null },
+];
+
+export const statusOptions: { name: string; value: string }[] = [
+  { name: "Not Placed", value: "not_placed" },
+  { name: "Placed", value: "placed" },
 ];

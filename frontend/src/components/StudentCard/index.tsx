@@ -72,7 +72,19 @@ const StudentCard = ({
       <Box>Web Dev Score: {webdScore}</Box>
       <Box>ReactJS Score: {reactScore}</Box>
       <Box>Batch Name: {batch.name}</Box>
-      <Box>Staus: {status === "not_placed" ? "NOT PLACED" : "PLACED"}</Box>
+      <Box sx={{ display: "flex", gap: "10px" }}>
+        <Box>Staus:</Box>
+        <span
+          style={{
+            borderRadius: "5px",
+            padding: "5px",
+            fontWeight: 600,
+            backgroundColor: status === "placed" ? "green" : "red",
+          }}
+        >
+          {status === "not_placed" ? "NOT PLACED" : "PLACED"}
+        </span>
+      </Box>
     </Box>
   );
 };

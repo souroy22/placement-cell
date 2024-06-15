@@ -4,7 +4,11 @@ import {
   Box,
   Button,
   CircularProgress,
+  MenuItem,
+  OutlinedInput,
   Pagination,
+  Select,
+  SelectChangeEvent,
   Skeleton,
   TextField,
 } from "@mui/material";
@@ -24,6 +28,8 @@ import { FaPlus } from "react-icons/fa";
 // import InfiniteScroll from "react-infinite-scroll-component";
 import CustomModal from "../../components/Modal";
 import { getAllBatches } from "../../api/batch.api";
+import { Theme, useTheme } from "@mui/material/styles";
+import { statusOptions } from "../../services/constants";
 
 const initialFormData = {
   name: "",
@@ -34,6 +40,18 @@ const initialFormData = {
   webdScore: undefined,
   reactScore: undefined,
   batch: undefined,
+  status: "",
+};
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
 };
 
 const Students = () => {
@@ -51,8 +69,7 @@ const Students = () => {
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
 
   const dispatch = useDispatch();
-
-  console.log(`${currentBatchPage}, ${totalBatchPages}`);
+  const theme = useTheme();
 
   // const optionsContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -70,6 +87,10 @@ const Students = () => {
       }
     }
   };
+
+  console.log(
+    `currentBatchPage ${currentBatchPage}, totalBatchPages ${totalBatchPages}`
+  );
 
   const fetchBatches = async (page: number = 1, searchValue: string = "") => {
     try {
@@ -229,6 +250,19 @@ const Students = () => {
     return check;
   };
 
+  function getStyles(
+    name: string,
+    personName: readonly string[],
+    theme: Theme
+  ) {
+    return {
+      fontWeight:
+        personName.indexOf(name) === -1
+          ? theme.typography.fontWeightRegular
+          : theme.typography.fontWeightMedium,
+    };
+  }
+
   const handleDelete = async (slug: string) => {
     try {
       await deleteStudent(slug);
@@ -301,7 +335,7 @@ const Students = () => {
 
   return (
     <Box>
-      <CustomModal open={open} handleClose={handleClose}>
+      <CustomModal open={open} handleClose={handleClose} width={500}>
         <Box className="form-card">
           <Box className="form-title">Add New Interview</Box>
           <Box>
@@ -368,54 +402,99 @@ const Students = () => {
                 // PaperComponent={ListboxComponent}
                 // PopperComponent={PopperComponent}
               />
-              <label
-                className="student-add-form-label"
-                htmlFor="student-dsaScore"
+              <Box
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: "10px",
+                  justifyContent: "space-between",
+                }}
               >
-                Student DSA Mark*
-              </label>
-              <input
-                name="dsaScore"
-                type="number"
-                required
-                value={formData.dsaScore}
-                id="student-dsaScore"
-                placeholder="Enter DSA Mark"
-                className="student-add-form-input"
-                onChange={handleFormChange}
-              />
-              <label
-                className="student-add-form-label"
-                htmlFor="student-webdScore"
-              >
-                Student Web Dev Mark*
-              </label>
-              <input
-                name="webdScore"
-                type="number"
-                required
-                value={formData.webdScore}
-                id="student-webdScore"
-                placeholder="Enter Web Dev Mark"
-                className="student-add-form-input"
-                onChange={handleFormChange}
-              />
+                <Box sx={{ flexBasis: "33%" }}>
+                  <label
+                    className="student-add-form-label"
+                    htmlFor="student-dsaScore"
+                  >
+                    Student DSA Mark*
+                  </label>
+                  <input
+                    name="dsaScore"
+                    type="number"
+                    required
+                    value={formData.dsaScore}
+                    id="student-dsaScore"
+                    placeholder="Enter DSA Mark"
+                    className="student-add-form-input"
+                    onChange={handleFormChange}
+                  />
+                </Box>
+                <Box sx={{ flexBasis: "33%" }}>
+                  <label
+                    className="student-add-form-label"
+                    htmlFor="student-webdScore"
+                  >
+                    Student Web Dev Mark*
+                  </label>
+                  <input
+                    name="webdScore"
+                    type="number"
+                    required
+                    value={formData.webdScore}
+                    id="student-webdScore"
+                    placeholder="Enter Web Dev Mark"
+                    className="student-add-form-input"
+                    onChange={handleFormChange}
+                  />
+                </Box>
+                <Box sx={{ flexBasis: "33%" }}>
+                  <label
+                    className="student-add-form-label"
+                    htmlFor="student-reactScore"
+                  >
+                    Student ReactJS Mark*
+                  </label>
+                  <input
+                    name="reactScore"
+                    type="number"
+                    required
+                    value={formData.reactScore}
+                    id="student-reactScore"
+                    placeholder="Enter ReactJS Mark"
+                    className="student-add-form-input"
+                    onChange={handleFormChange}
+                  />
+                </Box>
+              </Box>
               <label
                 className="student-add-form-label"
                 htmlFor="student-reactScore"
               >
-                Student ReactJS Mark*
+                Placement Status*
               </label>
-              <input
-                name="reactScore"
-                type="number"
-                required
-                value={formData.reactScore}
-                id="student-reactScore"
-                placeholder="Enter ReactJS Mark"
-                className="student-add-form-input"
-                onChange={handleFormChange}
-              />
+              <Select
+                displayEmpty
+                value={formData.status}
+                name="status"
+                onChange={(event: SelectChangeEvent<typeof statusOptions>) =>
+                  setFormData({ ...formData, status: event.target.value })
+                }
+                input={<OutlinedInput />}
+                MenuProps={MenuProps}
+                inputProps={{ "aria-label": "Without label" }}
+              >
+                <MenuItem disabled value="">
+                  <em>Select Status</em>
+                </MenuItem>
+                {statusOptions.map((name) => (
+                  <MenuItem
+                    key={name.value}
+                    value={name.value}
+                    style={getStyles(name.name, formData.status, theme)}
+                  >
+                    {name.name}
+                  </MenuItem>
+                ))}
+              </Select>
               <Button
                 sx={{ marginTop: "20px" }}
                 type="submit"

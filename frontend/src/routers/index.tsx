@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { Box, CircularProgress } from "@mui/material";
 import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
+import Batches from "../pages/batches";
 const Result = lazy(() => import("../pages/results"));
 const LoginForm = lazy(() => import("../components/LoginForm"));
 const SignupForm = lazy(() => import("../components/SignupForm"));
@@ -37,6 +38,7 @@ const RouterComponent = () => {
           <Route path="/" element={<Navigate to="/interviews" />} />
           <Route path="/interviews" element={<Interviews />} />
           <Route path="/students" element={<Students />} />
+          <Route path="/batches" element={<Batches />} />
           <Route path="/result/:slug" element={<Result />} />
         </Route>
       </Routes>

@@ -5,6 +5,7 @@ import globalReducer from "./global/globalReducer";
 import interviewReducer from "./interview/interviewReducer";
 import studentReducer from "./student/studentReducer";
 import resultReducer from "./result/resultReducer";
+import batchReducer from "./bactch/batchReducer";
 
 const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ const store = configureStore({
     interviewReducer,
     studentReducer,
     resultReducer,
+    batchReducer,
   },
 });
 
